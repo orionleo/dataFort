@@ -20,15 +20,12 @@ function Welcome({ account, contract, provider }) {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("No image selected");
   const [isLoading, setIsLoading] = useState(false);
-  console.log(process.env.PINATA_KEY);
   const handleSubmit = async (e) => {
     setIsLoading(true);
-    console.log(file);
     e.preventDefault();
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      console.log(file.name.split(".")[0]);
       const metadata = JSON.stringify({
         name: file.name.split(".")[0],
       });
@@ -63,7 +60,6 @@ function Welcome({ account, contract, provider }) {
           icon: "error",
           button: "Ok",
         });
-        console.log(e);
         setIsLoading(false);
         return;
       }
@@ -81,7 +77,6 @@ function Welcome({ account, contract, provider }) {
   const retrieveFile = (e) => {
     setIsLoading(true);
     const data = e.target.files[0]; //files array of files object
-    // console.log(data);
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(data);
     reader.onloadend = () => {

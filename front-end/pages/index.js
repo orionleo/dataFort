@@ -14,13 +14,34 @@ const App = () => {
   const [provider, setProvider] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [dataRecieved, setDataRecieved] = useState([]);
-  const [shareAddress,setShareAddress ] = useState("");
+  const [shareAddress, setShareAddress] = useState("");
+  const [selectAddress, setSelectAddress] = useState("People With Access");
 
   const sharing = async () => {
-    const signer = contract.connect(provider.getSigner());
-    await signer.grantAccess(shareAddress);
+    try {
+      const signer = contract.connect(provider.getSigner());
+      await signer.grantAccess(shareAddress);
+      const addressList = await signer.getAccessList();
+      
+      console.log(addressList);
+      setDataRecieved(addressList);
+      setSelectAddress("People with Access");
+      
+    } catch (error) {
+      console.log(error);
+    }
     setModalOpen(false);
   };
+  
+  const revokingAccess = async()=>{
+    const signer = contract.connect(provider.getSigner());
+    await signer.revokeAccess(selectAddress);
+    setModalOpen(false);
+    const addressList = await signer.getAccessList();
+    console.log(addressList);
+    setDataRecieved(addressList);
+    setSelectAddress("People with Access");
+  }
   useEffect(() => {
     if (!contract) {
       return;
@@ -28,7 +49,8 @@ const App = () => {
     (async () => {
       const signer = contract.connect(provider.getSigner());
       const addressList = await signer.getAccessList();
-
+      console.log(addressList);
+      
       setDataRecieved(addressList);
     })();
   }, [contract]);
@@ -41,7 +63,7 @@ const App = () => {
           window.ethereum.on("chainChanged", () => {
             window.location.reload();
           });
-
+          
           window.ethereum.on("accountsChanged", () => {
             window.location.reload();
           });
@@ -103,17 +125,20 @@ const App = () => {
                       className="address"
                       placeholder="Enter Address"
                       value={shareAddress}
-                      onChange={(e)=>setShareAddress(e.target.value)}
+                      onChange={(e) => setShareAddress(e.target.value)}
                     ></input>
                   </div>
                   <form id="myForm">
-                    <select id="selectNumber">
+                    <select
+                      id="selectNumber"
+                      value={selectAddress}
+                      onChange={(e) => setSelectAddress(e.target.value)}
+                    >
                       <option className="address">People With Access</option>
-                      {dataRecieved.length>0&&(
-                        dataRecieved.map((data,index)=>(
-                          <option className="address">{data}</option>
-                        ))
-                      )}
+                      {dataRecieved.length > 0 &&
+                        dataRecieved.map((data, index) => (
+                          data[1]==true&&<option>{data[0]}</option>
+                        ))}
                     </select>
                   </form>
                   <div className="footer">
@@ -126,6 +151,9 @@ const App = () => {
                       Cancel
                     </button>
                     <button onClick={() => sharing()}>Share</button>
+                    {selectAddress !== "People With Access" && (
+                      <button onClick={() => {revokingAccess()}}>Revoke</button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -10,36 +10,31 @@ const Images = ({ contract, provider, account }) => {
   const [senderAdress, setSenderAdress] = useState("");
 
   const getdata = async () => {
-    console.log(senderAdress);
+    let timeout;
     setIsLoading(true);
-    console.log("random call");
     let dataArray;
     const Otheraddress = senderAdress;
     try {
       if (Otheraddress) {
         const signer = contract.connect(provider.getSigner());
         dataArray = await signer.viewDocuments(Otheraddress);
-        // console.log(dataArray);
       } else {
         const signer = contract.connect(provider.getSigner());
         dataArray = await signer.viewDocuments(account);
       }
     } catch (e) {
-      console.log(e);
       swal({ title: "You don't have access", icon: "error", button: "Ok" });
       setData([]);
       setIsLoading(false);
       return;
     }
-    console.log(dataArray);
+
     const isEmpty = Object.keys(dataArray).length === 0;
 
     setIsLoading(false);
     if (!isEmpty) {
       const str = dataArray.toString();
       const str_array = str.split(",");
-      // console.log(str);
-      // console.log(str_array);
 
       let arr = [];
 
@@ -49,17 +44,27 @@ const Images = ({ contract, provider, account }) => {
             <img
               key={i}
               src={`https://gateway.pinata.cloud/ipfs/${item.substring(6)}`}
-              alt="new"
+              alt={"new"}
               className="image-list rounded-md"
             ></img>
           </a>
         )
       );
-      console.log(arr[0]);
       setData(arr);
     } else {
       swal({ title: "No image to display", icon: "error", button: "Ok" });
     }
+    // Set timeout functionality
+    timeout = setTimeout(() => {
+      setIsLoading(false);
+      swal({
+        title: "Timed out, try again later",
+        icon: "error",
+        button: "Ok",
+      });
+    }, 10000); // Set timeout to 10 seconds
+    setIsLoading(false);
+    clearTimeout(timeout);
   };
 
   return (
@@ -71,12 +76,11 @@ const Images = ({ contract, provider, account }) => {
               <Loader />
             ) : (
               <>
-              <div className="flex h-full w-full">
-                
-                {data.map((item, i) => (
-                  <div className="mr-4">{item}</div>
-                ))}
-              </div>
+                <div className="flex h-full w-full">
+                  {data.map((item, i) => (
+                    <div className="mr-4">{item}</div>
+                  ))}
+                </div>
                 <input
                   placeholder="Enter Sender's Address"
                   type="text"
