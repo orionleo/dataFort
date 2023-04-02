@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.7.0 <0.9.0;
-import "hardhat/console.sol";
 
 contract DocumentSharing {
   
@@ -26,7 +25,7 @@ contract DocumentSharing {
     if(previousAccess[msg.sender][user]){
        for(uint i = 0; i < userAccessList[msg.sender].length; i++){
            if(userAccessList[msg.sender][i].user == user){
-                userAcc essList[msg.sender][i].granted = true; 
+                userAccessList[msg.sender][i].granted = true; 
            }
        }
     } else {
