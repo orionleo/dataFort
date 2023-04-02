@@ -20,6 +20,7 @@ function Welcome({ account, contract, provider }) {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("No image selected");
   const [isLoading, setIsLoading] = useState(false);
+  console.log(process.env.PINATA_KEY);
   const handleSubmit = async (e) => {
     setIsLoading(true);
     console.log(file);

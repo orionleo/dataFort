@@ -7,7 +7,6 @@ import Footer from "../components/Footer.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Welcome from "../components/Welcome.jsx";
 import Images from "../components/Images.jsx";
-import Share from "@/components/Share.jsx";
 
 const App = () => {
   const [account, setAccount] = useState("");
