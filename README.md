@@ -1,4 +1,4 @@
-# dataFort
+# DataFort
 
 A way to survey land using drones and store data in a decentralised way
 
