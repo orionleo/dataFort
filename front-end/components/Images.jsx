@@ -2,14 +2,15 @@ import { useState } from "react";
 
 import swal from "sweetalert";
 import Loader from "./Loader";
-import Image from "next/image"
+import Image from "next/image";
 
 const Images = ({ contract, provider, account }) => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [senderAdress, setSenderAdress] = useState("");
 
   const getdata = async () => {
+    console.log(senderAdress);
     setIsLoading(true);
     console.log("random call");
     let dataArray;
@@ -25,33 +26,39 @@ const Images = ({ contract, provider, account }) => {
       }
     } catch (e) {
       console.log(e);
-      swal({title:"You don't have access",icon:'error',button:'Ok'});
+      swal({ title: "You don't have access", icon: "error", button: "Ok" });
+      setData([]);
       setIsLoading(false);
       return;
     }
     console.log(dataArray);
     const isEmpty = Object.keys(dataArray).length === 0;
 
+    setIsLoading(false);
     if (!isEmpty) {
       const str = dataArray.toString();
       const str_array = str.split(",");
       // console.log(str);
       // console.log(str_array);
-      const images = str_array.map((item, i) => {
-        return (
+
+      let arr = [];
+
+      str_array.map((item, i) =>
+        arr.push(
           <a href={item} key={i} target="_blank">
-            <Image
+            <img
               key={i}
               src={`https://gateway.pinata.cloud/ipfs/${item.substring(6)}`}
               alt="new"
-              className="image-list"
-            ></Image>
+              className="image-list rounded-md"
+            ></img>
           </a>
-        );
-      });
-      setData(images);
+        )
+      );
+      console.log(arr[0]);
+      setData(arr);
     } else {
-      alert("No image to display");
+      swal({ title: "No image to display", icon: "error", button: "Ok" });
     }
   };
 
@@ -59,11 +66,17 @@ const Images = ({ contract, provider, account }) => {
     <div className="flex w-full justify-center items-center">
       <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 px-4 ">
         <div className="flex flex-col flex-1 items-center jusitfy-start w-full mt-[-50px]">
-          <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
+          <div className="p-5 w-full flex flex-col justify-start items-center">
             {isLoading ? (
               <Loader />
             ) : (
               <>
+              <div className="flex h-full w-full">
+                
+                {data.map((item, i) => (
+                  <div className="mr-4">{item}</div>
+                ))}
+              </div>
                 <input
                   placeholder="Enter Sender's Address"
                   type="text"
@@ -73,12 +86,13 @@ const Images = ({ contract, provider, account }) => {
                     setSenderAdress(e.target.value);
                   }}
                 />
+
                 <button
                   type="button"
                   onClick={getdata}
                   className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
                 >
-                  Upload
+                  Recvieve Data
                 </button>
               </>
             )}

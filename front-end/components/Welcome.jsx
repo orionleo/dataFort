@@ -44,8 +44,8 @@ function Welcome({ account, contract, provider }) {
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           headers: {
-            pinata_api_key: process.env.PINATA_KEY,
-            pinata_secret_api_key:process.env.PINATA_SECRET_KEY,
+            pinata_api_key: "dba8b6d4f609858ba1ce",
+            pinata_secret_api_key:"8b8863a44a831ad45eead9acab12cfb90d014f160f5e9e8cbb5ef5039895764c",
             "Content-Type": "multipart/form-data",
           },
         });
