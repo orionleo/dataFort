@@ -3,4 +3,22 @@
 A way to survey land using drones and store data in a decentralised way
 
 
-WHATSAPP BOT DEMO LINK : https://drive.google.com/file/d/107VHzNkMihFvJpOT1gdAktwc6ajJsVzL/view?usp=sharing
+## Detailed Report and PPT
+- Whatsapp Bot Demo Link can be [found here]( https://drive.google.com/file/d/107VHzNkMihFvJpOT1gdAktwc6ajJsVzL/view?usp=sharing)
+
+
+## Technologies Used :
+- Drone to Capture Images 
+- Maximum flight time for Drone
+- Raspberry Pie
+- Arduino Nano 33 BLE
+- Blockchain 
+- Decentralized image storage using Ethereum, Polygon, and IPFS
+- Independent Spartans tokens based on Solana.
+- ML Model To identify crop defect
+- ML Model For map stitching
+- Whatsapp Notification Bot
+
+
+
+
