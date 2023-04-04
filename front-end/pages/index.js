@@ -7,7 +7,7 @@ import Footer from "../components/Footer.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Welcome from "../components/Welcome.jsx";
 import Images from "../components/Images.jsx";
-
+import swal from "sweetalert";
 const App = () => {
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState(null);
@@ -16,6 +16,7 @@ const App = () => {
   const [dataRecieved, setDataRecieved] = useState([]);
   const [shareAddress, setShareAddress] = useState("");
   const [selectAddress, setSelectAddress] = useState("People With Access");
+  const [hasEth,setHasEth] = useState(true);
 
   const sharing = async () => {
     try {
@@ -54,8 +55,19 @@ const App = () => {
       setDataRecieved(addressList);
     })();
   }, [contract]);
+
+
+
   useEffect(() => {
+
+    if(!window.ethereum){
+      swal({title:"Please install metamask and connect your wallet (polygon mattic)",icon:"error",button:"Ok"});
+      return;
+    }
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // if(!provider){
+    //   return;
+    // }
 
     (async () => {
       if (provider) {
@@ -85,6 +97,7 @@ const App = () => {
         }
       } else {
         console.error("Metamask is not installed");
+        return;
       }
     })();
   }, []);
