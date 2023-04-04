@@ -38,18 +38,19 @@ const Images = ({ contract, provider, account }) => {
 
       let arr = [];
 
-      str_array.map((item, i) =>
+      str_array.map((item, i) => {
+        console.log(item)
         arr.push(
-          <a href={item} key={i} target="_blank">
+          <a href={`https://gateway.pinata.cloud/ipfs${item.substring(6)}`} key={i} target="_blank">
             <img
               key={i}
-              src={`https://gateway.pinata.cloud/ipfs/${item.substring(6)}`}
+              src={`https://gateway.pinata.cloud/ipfs${item.substring(6)}`}
               alt={"new"}
               className="image-list rounded-md"
             ></img>
           </a>
-        )
-      );
+        );
+      });
       setData(arr);
     } else {
       swal({ title: "No image to display", icon: "error", button: "Ok" });
