@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import swal from "sweetalert";
 import Loader from "./Loader";
-import Image from "next/image";
 
 const Images = ({ contract, provider, account }) => {
   const [data, setData] = useState([]);

@@ -7,6 +7,7 @@ import Footer from "../components/Footer.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Welcome from "../components/Welcome.jsx";
 import Images from "../components/Images.jsx";
+import Loader from "../components/Loader.jsx";
 import swal from "sweetalert";
 const App = () => {
   const [account, setAccount] = useState("");
@@ -16,25 +17,24 @@ const App = () => {
   const [dataRecieved, setDataRecieved] = useState([]);
   const [shareAddress, setShareAddress] = useState("");
   const [selectAddress, setSelectAddress] = useState("People With Access");
-  const [hasEth,setHasEth] = useState(true);
+  const [hasEth, setHasEth] = useState(true);
 
   const sharing = async () => {
     try {
       const signer = contract.connect(provider.getSigner());
       await signer.grantAccess(shareAddress);
       const addressList = await signer.getAccessList();
-      
+
       console.log(addressList);
       setDataRecieved(addressList);
       setSelectAddress("People with Access");
-      
     } catch (error) {
       console.log(error);
     }
     setModalOpen(false);
   };
-  
-  const revokingAccess = async()=>{
+
+  const revokingAccess = async () => {
     const signer = contract.connect(provider.getSigner());
     await signer.revokeAccess(selectAddress);
     setModalOpen(false);
@@ -42,7 +42,7 @@ const App = () => {
     console.log(addressList);
     setDataRecieved(addressList);
     setSelectAddress("People with Access");
-  }
+  };
   useEffect(() => {
     if (!contract) {
       return;
@@ -51,17 +51,20 @@ const App = () => {
       const signer = contract.connect(provider.getSigner());
       const addressList = await signer.getAccessList();
       console.log(addressList);
-      
+
       setDataRecieved(addressList);
     })();
   }, [contract]);
 
-
-
   useEffect(() => {
-
-    if(!window.ethereum){
-      swal({title:"Please install metamask and connect your wallet (polygon mattic)",icon:"error",button:"Ok"});
+    if (!window.ethereum) {
+      swal({
+        title:
+          "Please install metamask and connect your wallet (polygon mattic)",
+        icon: "error",
+        button: "Ok",
+      });
+      setHasEth(false);
       return;
     }
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -75,7 +78,7 @@ const App = () => {
           window.ethereum.on("chainChanged", () => {
             window.location.reload();
           });
-          
+
           window.ethereum.on("accountsChanged", () => {
             window.location.reload();
           });
@@ -106,19 +109,23 @@ const App = () => {
     <div className="min-h-screen">
       <div className="gradient-bg-welcome">
         <Navbar />
-        <Welcome account={account} contract={contract} provider={provider} />
-        <Images account={account} contract={contract} provider={provider} />
-        {!modalOpen && (
-          <div className="flex">
-            <button
-              type="button"
-              className="text-white w-1/2 justify-center items-center mx-auto mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
-              onClick={() => setModalOpen(true)}
-            >
-              Share
-            </button>
-          </div>
-        )}
+        {hasEth?(
+        <>
+          <Welcome account={account} contract={contract} provider={provider} />
+          <Images account={account} contract={contract} provider={provider} />
+          {!modalOpen && (
+            <div className="flex">
+              <button
+                type="button"
+                className="text-white w-1/2 justify-center items-center mx-auto mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
+                onClick={() => setModalOpen(true)}
+              >
+                Share
+              </button>
+            </div>
+          )}{" "}
+        </>
+        ):<Loader />}
         {modalOpen && (
           <Modal
             visible={modalOpen}
@@ -149,9 +156,10 @@ const App = () => {
                     >
                       <option className="address">People With Access</option>
                       {dataRecieved.length > 0 &&
-                        dataRecieved.map((data, index) => (
-                          data[1]==true&&<option>{data[0]}</option>
-                        ))}
+                        dataRecieved.map(
+                          (data, index) =>
+                            data[1] == true && <option>{data[0]}</option>
+                        )}
                     </select>
                   </form>
                   <div className="footer">
@@ -165,7 +173,13 @@ const App = () => {
                     </button>
                     <button onClick={() => sharing()}>Share</button>
                     {selectAddress !== "People With Access" && (
-                      <button onClick={() => {revokingAccess()}}>Revoke</button>
+                      <button
+                        onClick={() => {
+                          revokingAccess();
+                        }}
+                      >
+                        Revoke
+                      </button>
                     )}
                   </div>
                 </div>
@@ -174,6 +188,7 @@ const App = () => {
           </Modal>
         )}
       </div>
+
       <Footer />
     </div>
   );
