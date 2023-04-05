@@ -1,5 +1,6 @@
 This is a website built using [Next.js](https://nextjs.org) and TailwindCSS for the front-end.
 Solidity is also used to work on the ethereum blockchain, as well as the smart contract is deployed on Polygon-Mumbai Network.
+The smart contract is deployed on [Remix](https://remix.ethereum.org/)
 ## Getting Started
 
 The website is deployed on this link [DataFort](https://data-fort.vercel.app/). 
