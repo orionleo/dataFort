@@ -8,7 +8,7 @@ The smart contract is deployed on [Remix](https://remix.ethereum.org/)
 
 - A working demo video of the website can be [found here](https://youtu.be/efmwfdekAUE)
 
-- The smart contract deployed on polygon+ethereum and its transactions can be viewed [here](https://mumbai.polygonscan.com/address/0x9d544DA3a609D612a203AEE8942B166d58640EA4)
+- The smart contract **deployed on polygon+ethereum** and its transactions can be viewed [here](https://mumbai.polygonscan.com/address/0x9d544DA3a609D612a203AEE8942B166d58640EA4)
 
 - First it will prompt the user to connect their metamask wallet(s). 
 
@@ -18,7 +18,7 @@ The smart contract is deployed on [Remix](https://remix.ethereum.org/)
 
 - The user has to select the image they want to upload and upload it. 
 
-- Pinata is used to work with the IPFS protocols and upload the image on the ethereum blockchain. 
+- **Pinata is used to work with the IPFS protocols** and upload the image on the ethereum blockchain. 
 
 - A metamask window will open up to confirm the transaction and pay the fees in matic. 
 
@@ -36,6 +36,6 @@ The smart contract is deployed on [Remix](https://remix.ethereum.org/)
 
 <img width="543" alt="Screenshot 2023-04-05 at 1 26 36 PM" src="https://user-images.githubusercontent.com/83267766/230017744-dde058cf-7106-4d15-b714-5fe15980d68f.png">
 
-- We have used pinata since its a service which leverages IPFS protocols and [FileCoin storage network](https://docs.filecoin.io/smart-contracts/fundamentals/overview/) to store images on the blockchain. 
+- We have used **pinata** since its a service which **leverages IPFS protocols and [FileCoin storage network]**(https://docs.filecoin.io/smart-contracts/fundamentals/overview/) to store images on the blockchain. 
 
 <img width="1008" alt="Screenshot 2023-04-05 at 1 38 22 PM" src="https://user-images.githubusercontent.com/83267766/230020740-eb45ffdf-fef3-48e5-bdda-24020fe7e9fc.png">
