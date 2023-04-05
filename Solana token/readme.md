@@ -1,4 +1,5 @@
 ## Solana Token :
+The Spartan Token can be [viewed here](https://explorer.solana.com/address/AaEeWdxbHgegg9XJHQbWzJFj1QmpxJ94rpKXtosQ85Zs?cluster=devnet)
 This folder will create a wallet and airdrop some SOL, create fungible token metadata and mint a new fungible SPL token on Solana.<br />
 In order to mint a fungible SPL token, we first want to create a Devnet Wallet and airdrop SOL into it.<br />
 The wallet.ts file does this part :<br />
