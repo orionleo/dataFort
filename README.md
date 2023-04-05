@@ -19,3 +19,18 @@ A way to survey land using drones and store data in a decentralised way
 - ML Model To identify crop defect.
 - ML Model For map stitching.
 - Whatsapp Notification Bot using Twilio Api. 
+
+## Solana Wallet :
+This folder will create a wallet and airdrop some SOL, create fungible token metadata and mint a new fungible SPL token on Solana.
+In order to mint a fungible SPL token, we first want to create a Devnet Wallet and airdrop SOL into it.
+The wallet.ts file does this part :
+1. Connect to Solana Network
+2.Generate a new Solana Wallet
+3. Write Wallet Secret/Private Key to a .JSON
+4.Airdrop 1 SOL to new wallet for Gas fees
+
+The mint.ts file mints the token and had the metadata stored for our token
+It does the following part:
+1.Upload MetaData
+2. Create Mint Transaction
+3.Execute Mint Transaction
