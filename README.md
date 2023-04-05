@@ -21,8 +21,8 @@ A way to survey land using drones and store data in a decentralised way
 - Whatsapp Notification Bot using Twilio Api. 
 
 ## Solana Token :
-This folder will create a wallet and airdrop some SOL, create fungible token metadata and mint a new fungible SPL token on Solana.\n
-In order to mint a fungible SPL token, we first want to create a Devnet Wallet and airdrop SOL into it.\n
+This folder will create a wallet and airdrop some SOL, create fungible token metadata and mint a new fungible SPL token on Solana.<br />
+In order to mint a fungible SPL token, we first want to create a Devnet Wallet and airdrop SOL into it.<br />
 The wallet.ts file does this part :\n
 1. Connect to Solana Network\n
 2.Generate a new Solana Wallet\n
