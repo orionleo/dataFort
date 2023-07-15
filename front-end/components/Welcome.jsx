@@ -12,6 +12,7 @@ const Input = ({ placeholder, name, type, value }) => (
     type={type}
     step="0.0001"
     value={value}
+    readOnly={true}
     className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
   />
 );
@@ -20,6 +21,7 @@ function Welcome({ account, contract, provider }) {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("No image selected");
   const [isLoading, setIsLoading] = useState(false);
+  console.log(process.env.PINATA_KEY)
   const handleSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
@@ -34,15 +36,16 @@ function Welcome({ account, contract, provider }) {
         cidVersion: 0,
       });
       formData.append("pinataOptions", options);
-
+      
+      
       try {
         const resFile = await axios({
           method: "post",
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           headers: {
-            pinata_api_key: "dba8b6d4f609858ba1ce",
-            pinata_secret_api_key:"8b8863a44a831ad45eead9acab12cfb90d014f160f5e9e8cbb5ef5039895764c",
+            pinata_api_key: process.env.PINATA_KEY,
+            pinata_secret_api_key:process.env.PINATA_SECRET_KEY,
             "Content-Type": "multipart/form-data",
           },
         });

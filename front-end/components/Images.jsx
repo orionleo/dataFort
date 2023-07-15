@@ -40,16 +40,12 @@ const Images = ({ contract, provider, account }) => {
       str_array.map((item, i) => {
         console.log(item)
         arr.push(
-          <a href={`https://magenta-screeching-pigeon-769.mypinata.cloud/ipfs${item.substring(6)}`} key={i} target="_blank">
-          {/* <a href={`https://gateway.pinata.cloud/ipfs${item.substring(6)}`} key={i} target="_blank"> */}
             <img
               key={i}
-              // src={`https://gateway.pinata.cloud/ipfs${item.substring(6)}`}
               src={`https://magenta-screeching-pigeon-769.mypinata.cloud/ipfs${item.substring(6)}`}
               alt={"new"}
               className="image-list rounded-md"
-            ></img>
-          </a>
+            />
         );
       });
       setData(arr);
