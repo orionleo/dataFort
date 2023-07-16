@@ -1,22 +1,27 @@
-import { useState } from "react";
-
-import swal from "sweetalert";
-import Loader from "./Loader";
+import { useState } from 'react';
+import swal from 'sweetalert';
+import Loader from './Loader';
+import { Document,Page,pdfjs } from 'react-pdf';
 
 const Images = ({ contract, provider, account }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [senderAdress, setSenderAdress] = useState("");
+  const [senderAddress, setSenderAddress] = useState('');
+  const [numPages,setNumPages] = useState(null);
+
+  const onDocumentLoadSuccess = ({numPages})=>{
+    setNumPages(numPages)
+  }
 
   const getdata = async () => {
     let timeout;
     setIsLoading(true);
     let dataArray;
-    const Otheraddress = senderAdress;
+    const otherAddress = senderAddress;
     try {
-      if (Otheraddress) {
+      if (otherAddress) {
         const signer = contract.connect(provider.getSigner());
-        dataArray = await signer.viewDocuments(Otheraddress);
+        dataArray = await signer.viewDocuments(otherAddress);
       } else {
         const signer = contract.connect(provider.getSigner());
         dataArray = await signer.viewDocuments(account);
@@ -27,31 +32,44 @@ const Images = ({ contract, provider, account }) => {
       setIsLoading(false);
       return;
     }
-    
+
     const isEmpty = Object.keys(dataArray).length === 0;
-    
+
     setIsLoading(false);
     console.log(dataArray);
     if (!isEmpty) {
-      const str = dataArray.toString();
-      const str_array = str.split(",");
-
       let arr = [];
-      str_array.map((item, i) => {
-        console.log(item)
-        arr.push(
-            <img
-              key={i}
-              src={`https://magenta-screeching-pigeon-769.mypinata.cloud/ipfs${item.substring(6)}`}
-              alt={"new"}
-              className="image-list rounded-md"
-            />
-        );
-      });
+      await Promise.all(
+        dataArray.map(async (item, i) => {
+          console.log(item);
+          try {
+            const response = await fetch(`https://magenta-screeching-pigeon-769.mypinata.cloud/ipfs${item.substring(6)}`);
+            const blob = await response.blob();
+            const dataURL = await convertToDataURL(blob);
+            console.log(dataURL);
+            arr.push(
+              dataURL.substring(5,10)=="image"?(
+                <img key={i} src={dataURL} alt="new" className="image-list rounded-md h-[200px] w-[200px]" />
+              ):(
+                <embed
+        src={dataURL}
+        type="application/pdf"
+        width="50%"
+        height="600px"
+      />
+              )
+              
+            );
+          } catch (error) {
+            console.error('Error loading image:', error);
+          }
+        })
+      );
       setData(arr);
     } else {
       swal({ title: "No image to display", icon: "error", button: "Ok" });
     }
+
     // Set timeout functionality
     timeout = setTimeout(() => {
       setIsLoading(false);
@@ -61,8 +79,20 @@ const Images = ({ contract, provider, account }) => {
         button: "Ok",
       });
     }, 10000); // Set timeout to 10 seconds
+
     setIsLoading(false);
     clearTimeout(timeout);
+  };
+
+  const convertToDataURL = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   };
 
   return (
@@ -74,18 +104,14 @@ const Images = ({ contract, provider, account }) => {
               <Loader />
             ) : (
               <>
-                <div className="flex h-full w-full">
-                  {data.map((item, i) => (
-                    <div className="mr-4">{item}</div>
-                  ))}
-                </div>
+                <div className="flex h-full w-full flex-wrap">{data}</div>
                 <input
                   placeholder="Enter Sender's Address"
                   type="text"
-                  value={senderAdress}
+                  value={senderAddress}
                   className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
                   onChange={(e) => {
-                    setSenderAdress(e.target.value);
+                    setSenderAddress(e.target.value);
                   }}
                 />
 
@@ -94,7 +120,7 @@ const Images = ({ contract, provider, account }) => {
                   onClick={getdata}
                   className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
                 >
-                  Recvieve Data
+                  Receive Data
                 </button>
               </>
             )}
