@@ -18,14 +18,13 @@ const App = () => {
   const [shareAddress, setShareAddress] = useState("");
   const [selectAddress, setSelectAddress] = useState("People With Access");
   const [hasEth, setHasEth] = useState(true);
-
+  // console.log(account);
   const sharing = async () => {
     try {
       const signer = contract.connect(provider.getSigner());
       await signer.grantAccess(shareAddress);
       const addressList = await signer.getAccessList();
 
-      console.log(addressList);
       setDataRecieved(addressList);
       setSelectAddress("People with Access");
     } catch (error) {
@@ -39,7 +38,6 @@ const App = () => {
     await signer.revokeAccess(selectAddress);
     setModalOpen(false);
     const addressList = await signer.getAccessList();
-    console.log(addressList);
     setDataRecieved(addressList);
     setSelectAddress("People with Access");
   };
@@ -50,7 +48,6 @@ const App = () => {
     (async () => {
       const signer = contract.connect(provider.getSigner());
       const addressList = await signer.getAccessList();
-      console.log(addressList);
 
       setDataRecieved(addressList);
     })();

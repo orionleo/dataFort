@@ -2,16 +2,12 @@ import { useState } from 'react';
 import swal from 'sweetalert';
 import Loader from './Loader';
 import { Document,Page,pdfjs } from 'react-pdf';
+import Image from 'next/image';
 
 const Images = ({ contract, provider, account }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [senderAddress, setSenderAddress] = useState('');
-  const [numPages,setNumPages] = useState(null);
-
-  const onDocumentLoadSuccess = ({numPages})=>{
-    setNumPages(numPages)
-  }
 
   const getdata = async () => {
     let timeout;
@@ -36,26 +32,23 @@ const Images = ({ contract, provider, account }) => {
     const isEmpty = Object.keys(dataArray).length === 0;
 
     setIsLoading(false);
-    console.log(dataArray);
     if (!isEmpty) {
       let arr = [];
       await Promise.all(
         dataArray.map(async (item, i) => {
-          console.log(item);
           try {
             const response = await fetch(`https://magenta-screeching-pigeon-769.mypinata.cloud/ipfs${item.substring(6)}`);
             const blob = await response.blob();
             const dataURL = await convertToDataURL(blob);
-            console.log(dataURL);
             arr.push(
               dataURL.substring(5,10)=="image"?(
-                <img key={i} src={dataURL} alt="new" className="image-list rounded-md h-[200px] w-[200px]" />
+                <Image key={i} src={dataURL} alt="new" blurDataURL={dataURL} placeholder='blur' className="image-list rounded-md" width={"200"} height={"200"} />
               ):(
                 <embed
         src={dataURL}
         type="application/pdf"
-        width="50%"
-        height="600px"
+        width="200px"
+        height="200px"
       />
               )
               
